@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_aula1/widget_raisedbutton.dart';
 
 void main() {
   runApp(
@@ -30,26 +31,24 @@ class WidgetsBasicos extends StatelessWidget {
         title: Text("Widgets Basicos"),
       ),
       body: Container(
-        color: Colors.white,
-        child: widgetButton(),
+        height: double.infinity,
+        width: double.infinity,
+        color: Colors.yellow,
+        child: widgetRowColumn(),
       ),
     );
   }
 
-  widgetButton() {
-    var raisedButton = RaisedButton(
-      color: Colors.orange,
-      elevation: 30,
-      textColor: Colors.white,
-      child: Text("Clickme"),
-      onPressed: () => exebirTexto('Pressionado'),
+  widgetRowColumn() {
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        widgetButton(),
+        widgetButton(),
+        widgetButton(),
+      ],
     );
-    return Center(
-      child: raisedButton,
-    );
-  }
-
-  void exebirTexto(String message) {
-    print(message);
   }
 }
