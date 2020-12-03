@@ -1,4 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_aula1/models/match.dart';
+import 'package:flutter_aula1/widgetImage.dart';
+
+import 'api.dart';
 
 void main() {
   runApp(
@@ -17,51 +23,49 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.blue,
       ),
-      home: WidgetsBasicos(),
+      home: BuildListView(),
     );
   }
 }
 
-class WidgetsBasicos extends StatelessWidget {
+class BuildListView extends StatefulWidget {
+  @override
+  _BuildListViewState createState() => _BuildListViewState();
+}
+
+class _BuildListViewState extends State<BuildListView> {
+  var matches = new List<Match>();
+
+  _getMatches() {
+    API.getMatches().then((response) {
+      setState(() {
+        Iterable lista = json.decode(response.body);
+        matches = lista.map((model) => Match.fromJson(model)).toList();
+      });
+    });
+  }
+
+  _BuildListViewState() {
+    _getMatches();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Widgets Basicos"),
+        title: Text('Lista de Matches'),
       ),
-      body: Container(
-        //height: double.infinity,
-        //width: double.infinity,
-        color: Colors.white,
-        child: widgetImage(),
-      ),
+      body: listaDeMatches(),
     );
   }
 
-  widgetImage() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Image.network(
-            'https://img-cdn.hltv.org/teamlogo/D76Tko1piL7Ny_y7ZCqHQJ.png?ixlib=java-2.1.0&w=50&s=945bdc2894340b134a950ad484e7150c'),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('12:45'),
-            Text(
-              'VS',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 30,
-                color: Colors.red,
-              ),
-            ),
-            Text('1/12/2020')
-          ],
-        ),
-        Image.network(
-            'https://img-cdn.hltv.org/teamlogo/7b6DouMNGWcqENDx1vw_Ot.png?ixlib=java-2.1.0&w=50&s=5ffc85bfbc0398d0a826590a790a08a6'),
-      ],
-    );
+  listaDeMatches() {
+    return ListView.builder(
+        itemCount: matches.length,
+        itemBuilder: (context, index) {
+          return WidgetImage(
+            match: matches[index],
+          );
+        });
   }
 }
