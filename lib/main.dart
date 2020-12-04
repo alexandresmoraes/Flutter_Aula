@@ -40,7 +40,10 @@ class _BuildListViewState extends State<BuildListView> {
     API.getMatches().then((response) {
       setState(() {
         Iterable lista = json.decode(response.body);
-        matches = lista.map((model) => Match.fromJson(model)).toList();
+        matches = lista
+            .map((model) => Match.fromJson(model))
+            .where((match) => match.team1 != null && match.team2 != null)
+            .toList();
       });
     });
   }

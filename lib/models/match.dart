@@ -48,18 +48,21 @@ class Match {
 class Team1 {
   String name;
   int id;
+  String logo;
 
-  Team1({this.name, this.id});
+  Team1({this.name, this.id, this.logo});
 
   Team1.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     id = json['id'];
+    logo = json['logo'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
     data['id'] = this.id;
+    data['logo'] = this.logo;
     return data;
   }
 }
